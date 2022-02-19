@@ -145,7 +145,7 @@ print(plot)
 ```
 
 ```{r}
-filepath <- "/Users/anandkumarpola/Documents/G3/RUTGERS/Stat581/Project/climate_change.csv"
+filepath <- "/Users/Documents/climate_change.csv"
 climate_data.df <- read.csv(filepath)
 ```
 
