@@ -1,0 +1,1 @@
+# Study-of-Effect-of-Climatic-Factors-on-the-Prevalence-and-Intensity-of-Wildfires-
