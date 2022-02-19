@@ -1,8 +1,5 @@
 ---
-title: "R Notebook"
-output:
-  html_document:
-    df_print: paged
+title: "Study-of-Effect-of-Climatic-Factors-on-the-Prevalence-and-Intensity-of-Wildfires"
 ---
 
 ```{r}
@@ -13,7 +10,7 @@ library(data.table)
 ```
 
 ```{r}
-file.path <- "/Users/anandkumarpola/Documents/G3/RUTGERS/Stat581/Project/fires.csv"
+file.path <- "/Users/Documents/fires.csv"
 ```
 
 ```{r}
@@ -91,14 +88,8 @@ library("ggplot2")
 Annual_freq <- data.frame(table(fire_data.df$FIRE_YEAR))
 colnames(Annual_freq) <- c("Year", "Freq")
 
-# Annual_freq.lm <- lm(Freq ~ Year, Annual_freq)
-
-# Annual_freq.lm
-
 plot <-ggplot(data = Annual_freq, aes(x = Year, y = Freq)) +
       geom_bar(stat="identity")
-#       geom_abline(slope = coef(Annual_freq.lm)[["Year"]], 
-#               intercept = coef(Annual_freq.lm)[["(Intercept)"]])
 print(plot)
 
 Annual_Avg_size <- aggregate(fire_data.df$FIRE_SIZE, by = list(fire_data.df$FIRE_YEAR), FUN = mean)
@@ -129,9 +120,6 @@ fire_data.df$MONTH <- paste(fire_data.df$FIRE_YEAR, fire_data.df$MONTH, sep = '-
 monthly_freq <- data.frame(table(fire_data.df$MONTH))
 colnames(monthly_freq) <- c("Year_Month", "Freq")
 
-# Annual_freq.lm <- lm(Freq ~ Year, Annual_freq)
-
-# Annual_freq.lm
 
 plot <-ggplot(data = monthly_freq, aes(x = Year_Month, y = Freq)) +
        geom_bar(stat="identity")
@@ -210,10 +198,6 @@ plot <- ggplot(data = climate_data.df, aes(x = paste(Year, Month, sep = '-'), y 
       geom_bar(stat = "identity")
 print(plot)
 ```
-Scatterplots
-```{r}
-
-```
 
 ```{r}
 cor_mat <- round(cor(climate_data.df[-1:-2]), 2)
@@ -228,7 +212,6 @@ ggplot(data = melted_cor_mat, aes(x = Var1, y = Var2, fill = value)) + geom_tile
 monthly_fires_data <- cbind(monthly_freq, Monthly_Avg_size$Average_Size)
 colnames(monthly_fires_data) <- c("Year_Month", "Freq", "Average_Size")
 monthly_fires_data[monthly_fires_data$Year_Month %like% "2009", ][1,]
-# joint_data.df <- cbind(climate_data.df, monthly_freq, Monthly_Avg_size$Average_Size)
 ```
 The index of the first out-bound-month-year is 205. So, let's drop all rows which satisfy the condition Index >= 205
 
@@ -373,8 +356,6 @@ There are mostly no non-linear patterns between any pair of variables, (some do 
 
 Fitting linear regression to predict freq
 ```{r}
-#summary()
-#reg<-lm(train_data$Freq~train_data$Temp+train_data$MEI,train_data$CO2,train_data$CH4)
 reg <- lm(Freq~Temp+MEI+CO2+CH4, data = train_data)
 
 summary(reg)
@@ -429,7 +410,7 @@ We take the independent variables and the predicting variable, Freq in this case
 
 
 rf_data <- train_data[1:5]
-#head(rf_data)
+
 
 sample <- sample.int(n = nrow(rf_data),size = floor(.75*nrow(rf_data)),replace = F)
 train <- rf_data[sample,]
@@ -471,7 +452,7 @@ Prediction of average fire size per month.
 
 
 rf_data <- train_data[-5]
-#head(rf_data)
+
 
 sample <- sample.int(n = nrow(rf_data),size = floor(.75*nrow(rf_data)),replace = F)
 train <- rf_data[sample,]
